@@ -15,7 +15,7 @@ Upload orbit_velocity_tracking_env_cfg/run_env.py to enable visualization of cre
 
 You can see the env.step() log:
 
------DICTIONARY OF OUTPUT-----
+-----DICTIONARY OF OUTPUT-----<br>
  ({'policy': tensor([[-0.0157, -0.0024,  0.4098,  ..., -0.2987, -0.2533, -0.1537],
         [-0.1548,  0.4646,  0.0430,  ..., -0.2722, -0.2613, -0.2128],
         [-0.1390, -0.1175, -0.1845,  ..., -0.2223, -0.2633, -0.1676],
@@ -33,7 +33,7 @@ You can see the env.step() log:
         False, False], device='cuda:0'), tensor([False, False, False, False, False, False, False, False, False, False,
         False, False, False, False, False, False, False, False, False, False,
         False, False, False, False, False, False, False, False, False, False,
-        False, False], device='cuda:0'), {'log': {'Episode Reward/track_lin_vel_xy_exp': tensor(0.0030, device='cuda:0'), 'Episode Reward/track_ang_vel_z_exp': tensor(0.0041, device='cuda:0'), 'Episode Reward/lin_vel_z_l2': tensor(-0.0293, device='cuda:0'), 'Episode Reward/ang_vel_xy_l2': tensor(-0.0051, device='cuda:0'), 'Episode Reward/dof_torques_l2': tensor(-0.0010, device='cuda:0'), 'Episode Reward/dof_acc_l2': tensor(-0.0039, device='cuda:0'), 'Episode Reward/action_rate_l2': tensor(-0.0029, device='cuda:0'), 'Episode Reward/feet_air_time': tensor(-3.4000e-06, device='cuda:0'), 'Episode Reward/flat_orientation_l2': tensor(0., device='cuda:0'), 'Episode Reward/dof_pos_limits': tensor(0., device='cuda:0'), 'Curriculum/terrain_levels': 4.03125, 'Metrics/base_velocity/error_vel_xy': 0.01883886568248272, 'Metrics/base_velocity/error_vel_yaw': 0.016240473836660385, 'Episode Termination/time_out': 0, 'Episode Termination/base_contact': 1}}) 
+        False, False], device='cuda:0'), {'log': {'Episode Reward/track_lin_vel_xy_exp': tensor(0.0030, device='cuda:0'), 'Episode Reward/track_ang_vel_z_exp': tensor(0.0041, device='cuda:0'), 'Episode Reward/lin_vel_z_l2': tensor(-0.0293, device='cuda:0'), 'Episode Reward/ang_vel_xy_l2': tensor(-0.0051, device='cuda:0'), 'Episode Reward/dof_torques_l2': tensor(-0.0010, device='cuda:0'), 'Episode Reward/dof_acc_l2': tensor(-0.0039, device='cuda:0'), 'Episode Reward/action_rate_l2': tensor(-0.0029, device='cuda:0'), 'Episode Reward/feet_air_time': tensor(-3.4000e-06, device='cuda:0'), 'Episode Reward/flat_orientation_l2': tensor(0., device='cuda:0'), 'Episode Reward/dof_pos_limits': tensor(0., device='cuda:0'), 'Curriculum/terrain_levels': 4.03125, 'Metrics/base_velocity/error_vel_xy': 0.01883886568248272, 'Metrics/base_velocity/error_vel_yaw': 0.016240473836660385, 'Episode Termination/time_out': 0, 'Episode Termination/base_contact': 1}}) <br>
 -----END OF OUTPUT-----
 
 
