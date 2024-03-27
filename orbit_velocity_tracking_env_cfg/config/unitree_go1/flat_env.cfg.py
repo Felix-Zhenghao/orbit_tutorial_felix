@@ -1,3 +1,8 @@
+# Copyright (c) 2022-2024, The ORBIT Project Developers.
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 from omni.isaac.orbit.utils import configclass
 
 from .rough_env_cfg import UnitreeGo1RoughEnvCfg
@@ -33,6 +38,6 @@ class UnitreeGo1FlatEnvCfg_PLAY(UnitreeGo1FlatEnvCfg):
         self.scene.env_spacing = 2.5
         # disable randomization for play
         self.observations.policy.enable_corruption = False
-        # remove random pushing
-        self.randomization.base_external_force_torque = None
-        self.randomization.push_robot = None
+        # remove random pushing event
+        self.events.base_external_force_torque = None
+        self.events.push_robot = None

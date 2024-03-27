@@ -1,5 +1,5 @@
 """
-This script demonstrates how to run the RL environment for the cartpole balancing task.
+This script demonstrates how to run the RL environment for the velocity-tracing task for debugging purpose.
 """
 
 from __future__ import annotations

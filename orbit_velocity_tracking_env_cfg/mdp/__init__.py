@@ -1,6 +1,11 @@
-"""In this task-specific mdp, we don't have obs because all obs can be handled by the pre-defined orbit.env.mdp"""
+# Copyright (c) 2022-2024, The ORBIT Project Developers.
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
 
-from omni.isaac.orbit.envs.mdp import * # Once the task-specific mdp package is imported, the mdp utilities are imported
+"""This sub-module contains the functions that are specific to the locomotion environments."""
 
-from .curriculums import *
-from .reward import *
+from omni.isaac.orbit.envs.mdp import *  # noqa: F401, F403
+
+from .curriculums import *  # noqa: F401, F403
+from .rewards import *  # noqa: F401, F403
