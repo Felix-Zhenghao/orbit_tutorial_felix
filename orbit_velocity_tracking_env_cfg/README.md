@@ -1,11 +1,11 @@
 # Orbit Tutorial (now only walk through the velocity_env_cfg.py)
 
 ***TO DO:***
-- [] **Understand curriculum configuration by understanding the source code of manager, especially when is the manager called during simulation and its connection between the ```reset``` method of env**
-- [] **Figure out what is the action configuration doing and why it is so simple**
-- [] **Read the API of SceneEntityCfg and write more detailed about its usage**
-- [] **Understand how to wrap the environment and connect the NN-training part and the env part**
-- [] **Walk through other files if necessary**
+- [ ] **Understand curriculum configuration by understanding the source code of manager, especially when is the manager called during simulation and its connection between the ```reset``` method of env**
+- [ ] **Figure out what is the action configuration doing and why it is so simple**
+- [ ] **Read the API of SceneEntityCfg and write more detailed about its usage**
+- [ ] **Understand how to wrap the environment and connect the NN-training part and the env part**
+- [ ] **Walk through other files if necessary**
 
 
 > **All link in this tutorial is linked to the specific part of the source code or official document. Utilize these links to understand the materials deeper.**
