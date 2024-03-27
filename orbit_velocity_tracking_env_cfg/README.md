@@ -1,8 +1,15 @@
 # Orbit Tutorial
+
+***TO DO:***
+- **Understand curriculum configuration by understanding the source code of manager, especially when is the manager called during simulation and its connection between the ```reset``` method of env**
+- **Figure out what is the action configuration doing and why it is so simple**
+- **Read the API of SceneEntityCfg and write more detailed about its usage**
+- **Understand how to wrap the environment and connect the NN-training part and the env part**
+
+
 > **All link in this tutorial is linked to the specific part of the source code or official document. Utilize these links to understand the materials deeper.**
 
-
-> This tutorial is written 25/03/2024 after the launch of v0.4. The latest commit is a30d764. The key feature of v0.4 is the introduction of <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.managers.html#event-manager">***EventManager***</a> and deprecation of ***Randomization Manager***.
+> This tutorial is written 25/03/2024 after the launch of v0.4. The latest commit is a30d764. The key feature of v0.4 is the introduction of <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.managers.html#event-manager">```EventManager```</a> and deprecation of ```Randomization Manager```.
 
 This tutorial will walk you through the official implementation of the RL environment of the velocity-tracking locomotion task of Unitree GO1. It is exactly the <a href="https://github.com/NVIDIA-Omniverse/Orbit">isaac orbit</a> version of the repository <a href = "https://github.com/leggedrobotics/legged_gym">"legged_gym"</a> by ETH Zurich.
 
@@ -201,7 +208,7 @@ def base_lin_vel(env: BaseEnv, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot
     asset: RigidObject = env.scene[asset_cfg.name]
     return asset.data.root_lin_vel_b
 ```
-What it does is the following things: 1. reach the asset through <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.managers.html#omni.isaac.orbit.managers.SceneEntityCfg">***SceneEntityCfg***</a>; 2. Get the desired data from the <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.assets.html#omni.isaac.orbit.assets.ArticulationData">data container of that asset</a>. **We will cover both of these later**. 
+What it does is the following things: 1. reach the asset through <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.managers.html#omni.isaac.orbit.managers.SceneEntityCfg">```SceneEntityCfg```</a>; 2. Get the desired data from the <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.assets.html#omni.isaac.orbit.assets.ArticulationData">data container of that asset</a>. **We will cover both of these later**. 
 
 Similarly, orbit has pre-defined reward functions, command functions, etc. They locate at omni.isaac.orbit.envs.mdp. You can use them by:
 ```python
@@ -210,13 +217,13 @@ Similarly, orbit has pre-defined reward functions, command functions, etc. They 
 from omni.isaac.orbit.envs.mdp import * 
 ```
 
-- Get access to the asset during simulation using <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.managers.html#omni.isaac.orbit.managers.SceneEntityCfg">***SceneEntityCfg***</a>. In many cases, we want to reach the asset during simulation to get or change the states. In the code above, the information height_scanner got is an obs term for the robot. To reach the sensor data, we first need to reach the sensor. Pay attention that we only get the asset configuration through SceneEntityCfg. But most functions use asset cfg as the arguments so that's fine. In our case, the sensor is called "height_scanner", so we get it through:
+- Get access to the asset during simulation using <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.managers.html#omni.isaac.orbit.managers.SceneEntityCfg">```SceneEntityCfg```</a>. In many cases, we want to reach the asset during simulation to get or change the states. In the code above, the information height_scanner got is an obs term for the robot. To reach the sensor data, we first need to reach the sensor. Pay attention that we only get the asset configuration through SceneEntityCfg. But most functions use asset cfg as the arguments so that's fine. In our case, the sensor is called "height_scanner", so we get it through:
 ```python
 # sensor's name is "height_scanner" because we do height_scanner = RayCasterCfg(...) in the scene cfg.
 SceneEntityCfg("height_scanner")
 ``` 
 
-- Manage the whole group with ***\_\_post_init\_\_***. As an example of whole-group management, you can change the group's attribute <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.managers.html#omni.isaac.orbit.managers.ObservationGroupCfg.enable_corruption">***enable_corruption***</a>.If enable_corruption==True, the observation terms in the group are corrupted by adding noise (if specified), and  otherwise, no corruption is applied. The reason of using ***\_\_post_init\_\_*** is to fine-tune the configuration without changing the original group configuration. In our code case:
+- Manage the whole group with ```__post_init__```. As an example of whole-group management, you can change the group's attribute <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.managers.html#omni.isaac.orbit.managers.ObservationGroupCfg.enable_corruption">```enable_corruption```</a>.If enable_corruption==True, the observation terms in the group are corrupted by adding noise (if specified), and  otherwise, no corruption is applied. The reason of using ```__post_init__``` is to fine-tune the configuration without changing the original group configuration. In our code case:
 ```python
 def __post_init__(self):
     self.enable_corruption = True
@@ -231,7 +238,7 @@ policy: PolicyCfg = PolicyCfg()
 
 ### 2.4 Event Configuration
 
-Observation terms are all defined once and for all when the simulation starts, similar to the reward functions, curriculum rules, etc. But sometimes we want to have some 'special events' happen during simulation. For instance, we can do randomization toward some asset properties to narrow the sim-to-real gap. We use <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.managers.html#omni.isaac.orbit.managers.EventTermCfg">***EventTermCfg***</a> to enable special things happen during simulation.
+Observation terms are all defined once and for all when the simulation starts, similar to the reward functions, curriculum rules, etc. But sometimes we want to have some 'special events' happen during simulation. For instance, we can do randomization toward some asset properties to narrow the sim-to-real gap. We use <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.managers.html#omni.isaac.orbit.managers.EventTermCfg">```EventTermCfg```</a> to enable special things happen during simulation.
 
 ```python
 @configclass
@@ -305,7 +312,49 @@ class EventCfg:
 
 **Key points of the code:**
 
+- Choose the mode of an event. Three modes: ***startup***,***reset***,***interval***. The startup event happens only once at the beginning of training; the reset event happens at every time when an env is reset; the interval event happens within a specific time period of the simulation.
 
+- ```physic_dt``` and ```sim_dt```. These attributes of an env is defined as follows:
+```python
+class Env(RLTaskEnvCfg):
+    def __post_init__(self):
+        self.decimation = 4 # Unit: physical step(sim.dt or physic_dt)
+        self.episode_length_s = 20.0 # Unit: second
+        self.sim.dt = 0.005 # Unit: second
+```
+The ```sim.dt``` (physic_dt) determines how often the physics engine updates the state of the simulated world. A smaller time-step increases the accuracy of the simulation by calculating the physics more frequently, but at the cost of increased computational load. The ```decimation``` determines how many physical steps will the agent take action once. In this case, the agent takes action every ```4``` physical steps (0.005*4 = 0.02 second). Then, according to the ```episode_length_s```, the agent will take 1000 times of action in one episode (if episode not terminated ealier).
+
+- Understand ***reset***.
+The following code comes from the source code of <a href="https://isaac-orbit.github.io/orbit/_modules/omni/isaac/orbit/envs/base_env.html#BaseEnv">BaseEnv</a>. The ```_reset_idx``` is called when ```env.reset()``` is called. The ```_reset_idx``` will apply all ```EventTerm``` with a ```mode = "reset"```.
+```python
+def _reset_idx(self, env_ids: Sequence[int]):
+        """Reset environments based on specified indices.
+
+        Args:
+            env_ids: List of environment ids which must be reset
+        """
+        # reset the internal buffers of the scene elements
+        self.scene.reset(env_ids)
+        # apply events such as randomizations for environments that need a reset
+        if "reset" in self.event_manager.available_modes:
+            self.event_manager.apply(env_ids=env_ids, mode="reset")
+
+        # iterate over all managers and reset them
+        # this returns a dictionary of information which is stored in the extras
+        # note: This is order-sensitive! Certain things need be reset before others.
+        self.extras["log"] = dict()
+        # -- observation manager
+        info = self.observation_manager.reset(env_ids)
+        self.extras["log"].update(info)
+        # -- action manager
+        info = self.action_manager.reset(env_ids)
+        self.extras["log"].update(info)
+        # -- event manager
+        info = self.event_manager.reset(env_ids)
+        self.extras["log"].update(info)
+```
+
+- Understand ***interval***. The interval is sampled uniformly between the specified range for each environment instance. The term is applied on the environment instances where the current time hits the interval time. Use ```interval_range_s``` attribute to control the sampling range of the event's time.
 
 
 ### Reward Configuration
@@ -353,7 +402,7 @@ class RewardsCfg:
 
 **Key points of the code:**
 
-- Same as the situation of observation configuration, there are pre-defined reward functions in the <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.envs.mdp.html#module-omni.isaac.orbit.envs.mdp.rewards">***omni.isaac.orbit.envs.mdp***</a>. For example, the term of:
+- Same as the situation of observation configuration, there are pre-defined reward functions in the <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.envs.mdp.html#module-omni.isaac.orbit.envs.mdp.rewards">```omni.isaac.orbit.envs.mdp```</a>. For example, the term of:
 ```python
 track_lin_vel_xy_exp = RewTerm(
         func=mdp.track_lin_vel_xy_exp, weight=1.0, params={"command_name": "base_velocity", "std": math.sqrt(0.25)}
@@ -381,7 +430,7 @@ def feet_air_time(env: RLTaskEnv, command_name: str, sensor_cfg: SceneEntityCfg,
     reward *= torch.norm(env.command_manager.get_command(command_name)[:, :2], dim=1) > 0.1
     return reward
 ```
-The main idea of defining a reward function (and other self-defined funcs) is: first, reach the asset cfg with ***SceneEntityCfg[<asset_name>]***; second, use the methods of that asset class or data stored in the data container of that asset. For instance, the data container document of a ContactSensor is <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.sensors.html#omni.isaac.orbit.sensors.ContactSensorData">link</a>.
+The main idea of defining a reward function (and other self-defined funcs) is: first, reach the asset cfg with ```SceneEntityCfg[<asset_name>]```; second, use the methods of that asset class or data stored in the data container of that asset. For instance, the data container document of a ContactSensor is <a href="https://isaac-orbit.github.io/orbit/source/api/orbit/omni.isaac.orbit.sensors.html#omni.isaac.orbit.sensors.ContactSensorData">link</a>.
 
 
 
@@ -409,12 +458,12 @@ def illegal_contact(env: RLTaskEnv, threshold: float, sensor_cfg: SceneEntityCfg
         torch.max(torch.norm(net_contact_forces[:, :, sensor_cfg.body_ids], dim=-1), dim=1)[0] > threshold, dim=1
     )
 ```
-It returns a boolean value. If True, then the episode is terminated. **The hardest part of defining a function like this, I believe, is to know where the needed data is in the huge data container tensor**. No doc is provided and we need to ***print*** everything.
+It returns a boolean value. If True, then the episode is terminated. **The hardest part of defining a function like this, I believe, is to know where the needed data is in the huge data container tensor**. No doc is provided and we need to ```print``` everything.
 
 
 ### Curriculum Configuration
 
-The curriculum part is a good example to learn how mdp functions are called during simulation. Link: <a href="https://github.com/NVIDIA-Omniverse/orbit/blob/a30d764da2367415f1ed357bdcb581e99bb1a9b0/source/extensions/omni.isaac.orbit/omni/isaac/orbit/managers/manager_base.py">***manger_base.py***</a>;  <a href="https://github.com/NVIDIA-Omniverse/orbit/blob/main/source/extensions/omni.isaac.orbit/omni/isaac/orbit/managers/curriculum_manager.py">***curriculum_manager.py***</a>.
+The curriculum part is a good example to learn how mdp functions are called during simulation. Link: <a href="https://github.com/NVIDIA-Omniverse/orbit/blob/a30d764da2367415f1ed357bdcb581e99bb1a9b0/source/extensions/omni.isaac.orbit/omni/isaac/orbit/managers/manager_base.py">```manger_base.py```</a>;  <a href="https://github.com/NVIDIA-Omniverse/orbit/blob/main/source/extensions/omni.isaac.orbit/omni/isaac/orbit/managers/curriculum_manager.py">```curriculum_manager.py```</a>.
 
 ```python
 @configclass
@@ -459,145 +508,4 @@ class LocomotionVelocityRoughEnvCfg(RLTaskEnvCfg):
                 self.scene.terrain.terrain_generator.curriculum = False
 ```
 
-- Why ***\_\_post_init\_\_***? We use \_\_post_init\_\_ to fine-tune the environment configuration without changing the original definition of the env. This makes the code more readable and debuggable because it explicitly shows what is the task-specific configuration of an environment.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Understand Environment and Its Components
-
-While a simulation scene or world comprises of different components such as the robots, objects, and sensors (cameras, lidars, etc.), the environment is a higher level abstraction that provides an interface for interacting with the simulation. The environment is comprised of the following components:
-
-- Scene: The scene manager that creates and manages the virtual world in which the robot operates. This includes defining the robot,
-static and dynamic objects, sensors, etc.
-
-- Observation Manager: The observation manager that generates observations from the current simulation state and the data gathered 
-from the sensors. These observations may include privileged information that is not available to the robot in the real world.
-Additionally, user-defined terms can be added to process the observations and generate custom observations. 
-For example, using a network to embed high-dimensional observations into a lower-dimensional space.
-
-- Action Manager: The action manager that processes the raw actions sent to the environment and converts them to low-level commands 
-that are sent to the simulation. It can be configured to accept raw actions at different levels of abstraction. 
-For example, in case of a robotic arm, the raw actions can be joint torques, joint positions, or end-effector poses. 
-Similarly for a mobile base, it can be the joint torques, or the desired velocity of the floating base.
-
-- Randomization Manager: The randomization manager that randomizes different elements in the scene. 
-This includes resetting the scene to a default state or randomize the scene at different intervals of time. 
-The randomization manager can be configured to randomize different elements of the scene such as the masses of objects, 
-friction coefficients, or apply random pushes to the robot.
-
-The environment provides a unified interface for interacting with the simulation. However, it **does not include task-specific** quantities such as the reward function, or the termination conditions. These quantities are often specific to defining Markov Decision Processes (MDPs) while the base environment is agnostic to the MDP definition.
-
-**The environment steps forward in time at a fixed time-step. The physics simulation is decimated at a lower time-step. This is to ensure that the simulation is stable. These two time-steps can be configured independently using the BaseEnvCfg.decimation (number of simulation steps per environment step) and the BaseEnvCfg.sim.dt (physics time-step) parameters. Based on these parameters, the environment time-step is computed as the product of the two. The two time-steps can be obtained by querying the physics_dt and the step_dt properties respectively.**
-
-- **Physics Time-step (sim.dt)**: The physics time-step is a fundamental parameter that determines how often the physics engine updates the state of the simulated world. A smaller time-step increases the accuracy of the simulation by calculating the physics more frequently, but at the cost of increased computational load. In the context of reinforcement learning, this is crucial for accurately modeling the dynamics of the environment, such as the movement of objects or agents, ensuring that the simulated environment behaves as close to the real world as possible.
-
-- **Simulation Steps (decimation)**: Simulation steps, as described by the term 'decimation' in the provided context, refer to the number of physics simulation steps that are executed for each step of the environment that the RL agent perceives. This is a method to decouple the high-frequency updates required for accurate physics simulation from the lower-frequency decisions made by the RL agent. This discrepancy allows the simulation to maintain a high degree of physical accuracy through frequent updates while managing the computational and cognitive load by reducing the frequency of decision points required of the agent.
-
-Why called 'decimation'? "decimation" refers to the process of reducing the sampling rate or resolution of a dataset or signal. This is achieved by selecting a subset of data points or simulation steps and discarding the rest. The term does not imply destruction in a physical sense.
-
-In scenarios where the environment advances at a finer temporal resolution than the agent's decision-making frequency, defining the observation for the agent involves summarizing or aggregating the information available during the interval between the agent's actions. Why? Because while the physics simulation might update the state of the environment many times between the agent's decisions (due to the decimation factor), the agent typically receives only one observation per decision step.
-
-
-
-
+- Why ```__post_init__```? We use ```__post_init__``` to fine-tune the environment configuration without changing the original definition of the env. This makes the code more readable and debuggable because it explicitly shows what is the task-specific configuration of an environment.
