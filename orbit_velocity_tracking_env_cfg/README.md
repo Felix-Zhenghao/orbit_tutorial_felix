@@ -358,7 +358,7 @@ def _reset_idx(self, env_ids: Sequence[int]):
 - Understand ***interval***. The interval is sampled uniformly between the specified range for each environment instance. The term is applied on the environment instances where the current time hits the interval time. Use ```interval_range_s``` attribute to control the sampling range of the event's time.
 
 
-### Reward Configuration
+### 2.5 Reward Configuration
 
 We use reward terms to define the reward funtions of the agents.
 
@@ -435,7 +435,7 @@ The main idea of defining a reward function (and other self-defined funcs) is: f
 
 
 
-### Termination Configuration
+### 2.6 Termination Configuration
 ```python
 @configclass
 class TerminationsCfg:
@@ -474,7 +474,7 @@ class CurriculumCfg:
     terrain_levels = CurrTerm(func=mdp.terrain_levels_vel)
 ```
 
-### __post_init__
+### 2.7 ```__post_init__```
 
 ```python
 @configclass
