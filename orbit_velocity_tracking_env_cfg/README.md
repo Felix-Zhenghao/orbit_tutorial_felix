@@ -5,7 +5,7 @@
 - [ ] **Figure out what is the action configuration doing and why it is so simple**
 - [ ] **Read the API of SceneEntityCfg and write more detailed about its usage**
 - [ ] **Understand how to wrap the environment and connect the NN-training part and the env part**
-- [ ] **Walk through other files if necessary**
+- [ ] **Walk through other files if necessary, especially the train.py and env_wrapper part**
 
 
 > **All link in this tutorial is linked to the specific part of the source code or official document. Utilize these links to understand the materials deeper.**
